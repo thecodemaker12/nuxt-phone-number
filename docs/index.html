@@ -824,10 +824,19 @@ const parsed = parsePhone("+221771234567");
     </div>
 
     <script>
+      const STORAGE_KEY = "nuxt-phone-input-theme";
       const root = document.documentElement;
       const toggle = document.getElementById("themeToggle");
+
+      const storedTheme = localStorage.getItem(STORAGE_KEY);
+      if (storedTheme === "light" || storedTheme === "dark") {
+        root.dataset.theme = storedTheme;
+      }
+
       toggle.addEventListener("click", () => {
-        root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = nextTheme;
+        localStorage.setItem(STORAGE_KEY, nextTheme);
       });
     </script>
   </body>
