@@ -324,6 +324,57 @@ function formatOutput(e164: string | null, nationalFallback: string): string {
   }
 }
 
+function getPhoneState() {
+  if (!selectedCountry.value) {
+    return {
+      e164: null,
+      formatted: displayValue.value,
+      valid: false,
+    };
+  }
+
+  const candidate = displayValue.value.trim();
+  if (!candidate) {
+    return {
+      e164: null,
+      formatted: "",
+      valid: false,
+    };
+  }
+
+  const nationalRaw = candidate.replace(/[^\d]/g, "");
+  const normalizedInput = candidate.startsWith("+")
+    ? candidate
+    : `+${selectedCountry.value.dial}${nationalRaw}`;
+
+  try {
+    const parsed = parsePhoneNumberFromString(
+      normalizedInput,
+      selectedCountry.value.code,
+    );
+
+    if (!parsed) {
+      return {
+        e164: null,
+        formatted: displayValue.value,
+        valid: false,
+      };
+    }
+
+    return {
+      e164: parsed.number ?? null,
+      formatted: formatOutput(parsed.number ?? null, displayValue.value),
+      valid: parsed.isValid(),
+    };
+  } catch {
+    return {
+      e164: null,
+      formatted: displayValue.value,
+      valid: false,
+    };
+  }
+}
+
 function selectCountry(country: Country) {
   selectedCountry.value = country;
   closeDropdown();
@@ -381,26 +432,13 @@ function onBlur() {
 
 function emitData() {
   if (!selectedCountry.value) return;
-
-  const raw = displayValue.value.replace(/[^\d]/g, "");
-  const e164 = raw ? `+${selectedCountry.value.dial}${raw}` : null;
-  let valid = false;
-
-  if (e164) {
-    try {
-      const parsed = parsePhoneNumberFromString(e164, selectedCountry.value.code);
-      valid = parsed?.isValid() ?? false;
-    } catch {
-      valid = false;
-    }
-  }
-
+  const { e164, formatted, valid } = getPhoneState();
   isValid.value = valid;
-  emit("update:modelValue", formatOutput(e164, displayValue.value));
+  emit("update:modelValue", formatted);
   emit("data", {
     e164,
     countryCode: selectedCountry.value.code,
-    formatted: formatOutput(e164, displayValue.value),
+    formatted,
     isValid: valid,
   });
 }

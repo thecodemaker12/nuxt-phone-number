@@ -5,7 +5,7 @@ export type PhoneFormat = "national" | "international" | "e164";
 export interface PhoneInputUiOptions {
   variant?: "outline" | "soft" | "ghost";
   size?: "sm" | "md" | "lg";
-  rounded?: "sm" | "md" | "lg" | "xl" | "full";
+  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "full";
 }
 
 export interface ModuleOptions {
