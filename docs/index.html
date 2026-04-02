@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nuxt-phone-input — Documentation</title>
+    <title>nuxt-phone-number — Documentation</title>
     <meta
       name="description"
-      content="Documentation de nuxt-phone-input, un module Nuxt avec UPhoneInput, usePhone() et configuration globale phoneInput."
+      content="Documentation de nuxt-phone-number, un module Nuxt avec UPhoneInput, usePhone() et configuration globale phoneInput."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -535,7 +535,7 @@
           <div class="sb-logo">
             <div class="sb-logo-icon">📞</div>
             <div>
-              <div class="sb-pkg">nuxt-phone-input</div>
+              <div class="sb-pkg">nuxt-phone-number</div>
               <div class="sb-version">
                 <span>Nuxt Module</span>
                 <span class="sb-ver-dot">·</span>
@@ -568,7 +568,7 @@
           </div>
           <h1><em>Phone input</em> designed for Nuxt.</h1>
           <p class="hero-lead">
-            <code>nuxt-phone-input</code> is a module-first phone input for Nuxt 3
+            <code>nuxt-phone-number</code> is a module-first phone input for Nuxt 3
             and Nuxt 4 with auto-imported <code>UPhoneInput</code>,
             <code>usePhone()</code>, global configuration through
             <code>nuxt.config.ts</code> and UI props aligned with a Nuxt UI
@@ -642,7 +642,7 @@
               Install the module and the phone formatting dependency.
             </p>
           </div>
-          <pre><code>npm install nuxt-phone-input libphonenumber-js</code></pre>
+          <pre><code>npm install nuxt-phone-number libphonenumber-js</code></pre>
         </section>
 
         <section class="section" id="usage">
@@ -673,7 +673,7 @@ const phone = ref("");
             </p>
           </div>
           <pre><code>export default defineNuxtConfig({
-  modules: ["nuxt-phone-input"],
+  modules: ["nuxt-phone-number"],
 
   phoneInput: {
     defaultCountry: "SN",

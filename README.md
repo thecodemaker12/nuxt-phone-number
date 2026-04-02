@@ -1,6 +1,6 @@
-# nuxt-phone-input
+# nuxt-phone-number
 
-`nuxt-phone-input` is a Nuxt-first phone input module.
+`nuxt-phone-number` is a Nuxt-first phone input module.
 
 It provides:
 
@@ -13,12 +13,12 @@ It provides:
 ## Installation
 
 ```bash
-npm install nuxt-phone-input libphonenumber-js
+npm install nuxt-phone-number libphonenumber-js
 ```
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["nuxt-phone-input"],
+  modules: ["nuxt-phone-number"],
 
   phoneInput: {
     defaultCountry: "SN",

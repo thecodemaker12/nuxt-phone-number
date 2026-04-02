@@ -1,5 +1,15 @@
-import { defineBuildConfig } from "@nuxt/module-builder";
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
-  externals: ["libphonenumber-js", "libphonenumber-js/max"],
+  externals: [
+    "nuxt",
+    "nuxt/schema",
+    "@nuxt/schema",
+    "@nuxt/kit",
+    "#imports",
+    "vue",
+    "@vue/runtime-core",
+    "libphonenumber-js",
+    "libphonenumber-js/max",
+  ],
 });

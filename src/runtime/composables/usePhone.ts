@@ -1,3 +1,4 @@
+import { useNuxtApp } from "#imports";
 import type { PhoneHelpers } from "../types";
 
 export function usePhone(): PhoneHelpers {

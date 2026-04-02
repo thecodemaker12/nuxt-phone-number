@@ -9,7 +9,7 @@ import type { ModuleOptions } from "./runtime/types";
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: "nuxt-phone-input",
+    name: "nuxt-phone-number",
     configKey: "phoneInput",
     compatibility: {
       nuxt: "^3.0.0 || ^4.0.0",

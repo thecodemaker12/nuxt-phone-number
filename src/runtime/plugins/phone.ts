@@ -1,5 +1,6 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import type { CountryCode } from "libphonenumber-js";
+import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 import type { ModuleOptions, PhoneFormat, PhoneHelpers, PhoneInputData } from "../types";
 
 function normalizeCountryCode(code?: CountryCode | string): CountryCode | undefined {
