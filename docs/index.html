@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nuxt-phone-input — Documentation</title>
+    <meta
+      name="description"
+      content="Documentation de nuxt-phone-input, un module Nuxt avec UPhoneInput, usePhone() et configuration globale phoneInput."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Cabinet+Grotesk:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ff-sans: "Inter", system-ui, sans-serif;
+        --ff-mono: "JetBrains Mono", "Fira Code", monospace;
+        --ff-display: "Cabinet Grotesk", "Inter", sans-serif;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --sidebar-w: 256px;
+        --transition: 0.18s ease;
+      }
+
+      [data-theme="light"] {
+        --page: #f6f7f5;
+        --surface: #ffffff;
+        --surface-2: #f0f2ef;
+        --surface-3: #e8ebe6;
+        --border: #e2e5df;
+        --border-2: #cdd1c9;
+        --txt: #111812;
+        --txt-2: #3d5240;
+        --txt-3: #7a9280;
+        --green: #18794e;
+        --green-bg: #edfaf2;
+        --green-border: #b2dfcb;
+        --green-hi: #0f5e3b;
+        --blue: #1d5fc4;
+        --blue-bg: #eef4ff;
+        --blue-border: #b4cef7;
+        --amber: #b45309;
+        --amber-bg: #fffbeb;
+        --amber-border: #fcd34d;
+        --purple: #6d28d9;
+        --purple-bg: #f5f3ff;
+        --purple-border: #c4b5fd;
+        --code-bg: #f9faf8;
+        --code-border: #e2e5df;
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 12px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      [data-theme="dark"] {
+        --page: #0e1210;
+        --surface: #161a17;
+        --surface-2: #1d2320;
+        --surface-3: #242b26;
+        --border: #2a332c;
+        --border-2: #354039;
+        --txt: #e8ede9;
+        --txt-2: #8fa98f;
+        --txt-3: #4d6450;
+        --green: #34d399;
+        --green-bg: rgba(52, 211, 153, 0.09);
+        --green-border: rgba(52, 211, 153, 0.22);
+        --green-hi: #6ee7b7;
+        --blue: #60a5fa;
+        --blue-bg: rgba(96, 165, 250, 0.09);
+        --blue-border: rgba(96, 165, 250, 0.25);
+        --amber: #fbbf24;
+        --amber-bg: rgba(251, 191, 36, 0.09);
+        --amber-border: rgba(251, 191, 36, 0.25);
+        --purple: #a78bfa;
+        --purple-bg: rgba(167, 139, 250, 0.09);
+        --purple-border: rgba(167, 139, 250, 0.25);
+        --code-bg: #111611;
+        --code-border: #2a332c;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        font-size: 15px;
+      }
+
+      body {
+        font-family: var(--ff-sans);
+        background: var(--page);
+        color: var(--txt);
+        line-height: 1.7;
+        transition: background var(--transition), color var(--transition);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--green);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: var(--sidebar-w);
+        flex-shrink: 0;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sb-header {
+        padding: 24px 20px 18px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .sb-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .sb-logo-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        background: var(--green-bg);
+        border: 1px solid var(--green-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 15px;
+      }
+
+      .sb-pkg {
+        font-family: var(--ff-mono);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--txt);
+      }
+
+      .sb-version {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: var(--ff-mono);
+        font-size: 10.5px;
+        color: var(--txt-3);
+        margin-top: 6px;
+        flex-wrap: wrap;
+      }
+
+      .sb-ver-dot {
+        color: var(--border-2);
+      }
+
+      .sb-nav {
+        flex: 1;
+        padding: 12px 12px 24px;
+      }
+
+      .nav-group-label {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--txt-3);
+        padding: 10px 8px 4px;
+        display: block;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 8px;
+        border-radius: var(--radius-sm);
+        color: var(--txt-2);
+        font-size: 13px;
+        transition: all 0.12s;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .nav-link:hover {
+        background: var(--surface-2);
+        color: var(--txt);
+        text-decoration: none;
+      }
+
+      .nav-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--border-2);
+        flex-shrink: 0;
+      }
+
+      .main {
+        flex: 1;
+        min-width: 0;
+        max-width: 880px;
+        padding: 56px 52px 120px;
+      }
+
+      .hero {
+        margin-bottom: 56px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--green-bg);
+        border: 1px solid var(--green-border);
+        color: var(--green);
+        font-family: var(--ff-mono);
+        font-size: 11.5px;
+        padding: 4px 12px;
+        border-radius: 100px;
+        margin-bottom: 20px;
+      }
+
+      .hero-pulse {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        animation: blink 2s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      .hero h1 {
+        font-family: var(--ff-display);
+        font-size: 46px;
+        font-weight: 800;
+        line-height: 1.06;
+        letter-spacing: -1.8px;
+        color: var(--txt);
+        margin-bottom: 14px;
+      }
+
+      .hero h1 em {
+        font-style: normal;
+        color: var(--green);
+      }
+
+      .hero-lead {
+        font-size: 16.5px;
+        color: var(--txt-2);
+        max-width: 620px;
+        line-height: 1.65;
+        margin-bottom: 28px;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .chip {
+        font-family: var(--ff-mono);
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: var(--radius-sm);
+        border: 1px solid;
+        font-weight: 500;
+      }
+
+      .chip-g {
+        background: var(--green-bg);
+        border-color: var(--green-border);
+        color: var(--green);
+      }
+
+      .chip-b {
+        background: var(--blue-bg);
+        border-color: var(--blue-border);
+        color: var(--blue);
+      }
+
+      .chip-a {
+        background: var(--amber-bg);
+        border-color: var(--amber-border);
+        color: var(--amber);
+      }
+
+      .chip-p {
+        background: var(--purple-bg);
+        border-color: var(--purple-border);
+        color: var(--purple);
+      }
+
+      .section {
+        margin-bottom: 60px;
+      }
+
+      .section-head {
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        font-family: var(--ff-display);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--txt);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+
+      .h2-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      .hi-g { background: var(--green-bg); }
+      .hi-b { background: var(--blue-bg); }
+      .hi-a { background: var(--amber-bg); }
+      .hi-p { background: var(--purple-bg); }
+
+      .section-sub {
+        font-size: 13.5px;
+        color: var(--txt-3);
+        padding-left: 38px;
+        line-height: 1.55;
+      }
+
+      .feat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 18px 0 28px;
+      }
+
+      .feat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .feat-em {
+        font-size: 17px;
+        flex-shrink: 0;
+        margin-top: 1px;
+        line-height: 1;
+      }
+
+      .feat-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--txt);
+        margin-bottom: 2px;
+      }
+
+      .feat-desc {
+        font-size: 12px;
+        color: var(--txt-2);
+        line-height: 1.55;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      pre {
+        background: var(--code-bg);
+        color: var(--txt);
+        border: 1px solid var(--code-border);
+        border-radius: var(--radius-md);
+        padding: 16px 18px;
+        overflow-x: auto;
+        font-size: 12.5px;
+        line-height: 1.6;
+      }
+
+      code {
+        font-family: var(--ff-mono);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      thead th {
+        text-align: left;
+        padding: 12px 14px;
+        background: var(--surface-2);
+        color: var(--txt);
+        border-bottom: 1px solid var(--border);
+      }
+
+      tbody td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        color: var(--txt-2);
+        vertical-align: top;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .mini-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface);
+        padding: 16px;
+      }
+
+      .mini-card h3 {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .mini-card p {
+        color: var(--txt-2);
+        font-size: 13px;
+      }
+
+      .footer {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        font-size: 12.5px;
+        color: var(--txt-3);
+      }
+
+      .theme-toggle {
+        margin-top: 14px;
+        width: 100%;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--txt);
+        border-radius: var(--radius-sm);
+        padding: 9px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          display: block;
+        }
+
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .main {
+          padding: 28px 18px 80px;
+          max-width: none;
+        }
+
+        .feat-grid,
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero h1 {
+          font-size: 36px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sb-header">
+          <div class="sb-logo">
+            <div class="sb-logo-icon">📞</div>
+            <div>
+              <div class="sb-pkg">nuxt-phone-input</div>
+              <div class="sb-version">
+                <span>Nuxt Module</span>
+                <span class="sb-ver-dot">·</span>
+                <span>UPhoneInput</span>
+              </div>
+            </div>
+          </div>
+          <button class="theme-toggle" id="themeToggle" type="button">
+            Toggle Theme
+          </button>
+        </div>
+
+        <nav class="sb-nav">
+          <span class="nav-group-label">Guide</span>
+          <a class="nav-link" href="#overview"><span class="nav-dot"></span>Overview</a>
+          <a class="nav-link" href="#installation"><span class="nav-dot"></span>Installation</a>
+          <a class="nav-link" href="#usage"><span class="nav-dot"></span>Usage</a>
+          <a class="nav-link" href="#config"><span class="nav-dot"></span>Nuxt Config</a>
+          <a class="nav-link" href="#composable"><span class="nav-dot"></span>usePhone</a>
+          <a class="nav-link" href="#props"><span class="nav-dot"></span>Component API</a>
+          <a class="nav-link" href="#roadmap"><span class="nav-dot"></span>Nuxt Vision</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <section class="hero" id="overview">
+          <div class="hero-eyebrow">
+            <span class="hero-pulse"></span>
+            Nuxt-first package
+          </div>
+          <h1><em>Phone input</em> designed for Nuxt.</h1>
+          <p class="hero-lead">
+            <code>nuxt-phone-input</code> is a module-first phone input for Nuxt 3
+            and Nuxt 4 with auto-imported <code>UPhoneInput</code>,
+            <code>usePhone()</code>, global configuration through
+            <code>nuxt.config.ts</code> and UI props aligned with a Nuxt UI
+            style of development.
+          </p>
+          <div class="chip-row">
+            <span class="chip chip-g">Auto-import</span>
+            <span class="chip chip-b">SSR-ready</span>
+            <span class="chip chip-a">usePhone()</span>
+            <span class="chip chip-p">Nuxt config</span>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 id="features"><span class="h2-icon hi-g">✨</span>Features</h2>
+            <p class="section-sub">
+              The module is built around Nuxt ergonomics rather than a plain Vue
+              component wrapper.
+            </p>
+          </div>
+
+          <div class="feat-grid">
+            <div class="feat-card">
+              <div class="feat-em">🧩</div>
+              <div>
+                <div class="feat-title">Auto-registered component</div>
+                <div class="feat-desc">
+                  Use <code>&lt;UPhoneInput /&gt;</code> anywhere after adding the
+                  module, without manual imports.
+                </div>
+              </div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-em">🔌</div>
+              <div>
+                <div class="feat-title">Composable injection</div>
+                <div class="feat-desc">
+                  Access formatting, validation and parsing helpers with
+                  <code>usePhone()</code>.
+                </div>
+              </div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-em">⚙️</div>
+              <div>
+                <div class="feat-title">Global defaults</div>
+                <div class="feat-desc">
+                  Configure default country, preferred countries and format
+                  globally in <code>nuxt.config.ts</code>.
+                </div>
+              </div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-em">🎨</div>
+              <div>
+                <div class="feat-title">Nuxt UI style API</div>
+                <div class="feat-desc">
+                  Supports props like <code>variant</code>, <code>size</code> and
+                  <code>rounded</code> for app-wide consistency.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="installation">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-b">📦</span>Installation</h2>
+            <p class="section-sub">
+              Install the module and the phone formatting dependency.
+            </p>
+          </div>
+          <pre><code>npm install nuxt-phone-input libphonenumber-js</code></pre>
+        </section>
+
+        <section class="section" id="usage">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-a">🧪</span>Usage</h2>
+            <p class="section-sub">
+              The default API is intentionally simple and Nuxt-oriented.
+            </p>
+          </div>
+          <pre><code>&lt;script setup lang="ts"&gt;
+const phone = ref("");
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;UPhoneInput
+    v-model="phone"
+    variant="outline"
+    rounded="lg"
+  /&gt;
+&lt;/template&gt;</code></pre>
+        </section>
+
+        <section class="section" id="config">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-p">🛠</span>Nuxt Config</h2>
+            <p class="section-sub">
+              Set app-level defaults once, then reuse them everywhere.
+            </p>
+          </div>
+          <pre><code>export default defineNuxtConfig({
+  modules: ["nuxt-phone-input"],
+
+  phoneInput: {
+    defaultCountry: "SN",
+    preferredCountries: ["SN", "FR"],
+    format: "international",
+    ui: {
+      variant: "outline",
+      size: "md",
+      rounded: "lg"
+    }
+  }
+})</code></pre>
+        </section>
+
+        <section class="section" id="composable">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-g">🧠</span>usePhone</h2>
+            <p class="section-sub">
+              Injected helpers are available through a single composable.
+            </p>
+          </div>
+          <pre><code>&lt;script setup lang="ts"&gt;
+const { formatPhone, validatePhone, parsePhone, defaults } = usePhone();
+
+const formatted = formatPhone("+221771234567");
+const isValid = validatePhone("+221771234567");
+const parsed = parsePhone("+221771234567");
+&lt;/script&gt;</code></pre>
+        </section>
+
+        <section class="section" id="props">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-b">🧾</span>Component API</h2>
+            <p class="section-sub">
+              Core props already available in the current scaffold.
+            </p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Prop</th>
+                  <th>Type</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>modelValue</code></td>
+                  <td>string</td>
+                  <td><code>""</code></td>
+                  <td>Phone value bound with <code>v-model</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>countryCode</code></td>
+                  <td>string</td>
+                  <td>undefined</td>
+                  <td>Selected country via <code>v-model:country-code</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>variant</code></td>
+                  <td><code>"outline" | "soft" | "ghost"</code></td>
+                  <td><code>"outline"</code></td>
+                  <td>Visual style of the field shell.</td>
+                </tr>
+                <tr>
+                  <td><code>size</code></td>
+                  <td><code>"sm" | "md" | "lg"</code></td>
+                  <td><code>"md"</code></td>
+                  <td>Control density and spacing.</td>
+                </tr>
+                <tr>
+                  <td><code>rounded</code></td>
+                  <td><code>"sm" | "md" | "lg" | "xl" | "full"</code></td>
+                  <td><code>"lg"</code></td>
+                  <td>Border radius preset.</td>
+                </tr>
+                <tr>
+                  <td><code>preferredCountries</code></td>
+                  <td>string[]</td>
+                  <td><code>[]</code></td>
+                  <td>Countries shown first in the dropdown.</td>
+                </tr>
+                <tr>
+                  <td><code>format</code></td>
+                  <td><code>"national" | "international" | "e164"</code></td>
+                  <td><code>"international"</code></td>
+                  <td>Output mode used by the component and helpers.</td>
+                </tr>
+                <tr>
+                  <td><code>error</code></td>
+                  <td>string | boolean</td>
+                  <td>undefined</td>
+                  <td>Forces an error state or custom validation message.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="roadmap">
+          <div class="section-head">
+            <h2><span class="h2-icon hi-a">🚀</span>Nuxt Vision</h2>
+            <p class="section-sub">
+              The current scaffold is the foundation. The roadmap can push it
+              into a stronger Nuxt-specific package.
+            </p>
+          </div>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <h3>SSR & hydration</h3>
+              <p>
+                Keep browser-only behavior isolated and make all locale defaults
+                safe during server rendering.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h3>Afrique-first UX</h3>
+              <p>
+                Strong defaults around Senegal and broader African carrier and
+                numbering patterns can become a product differentiator.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h3>Nuxt UI alignment</h3>
+              <p>
+                Extend the visual API to feel native in projects already using
+                UInput-style conventions.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h3>App helpers</h3>
+              <p>
+                Expand <code>usePhone()</code> with smarter parsing, localized
+                messaging and optional WhatsApp-oriented utilities.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer">
+          Built for <a href="https://github.com/thecodemaker12/nuxt-phone-input">nuxt-phone-input</a>.
+          Visual direction inspired by the documentation style of
+          <a href="https://github.com/sssadgroup/nuxt-auth-kit">nuxt-auth-kit</a>.
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const toggle = document.getElementById("themeToggle");
+      toggle.addEventListener("click", () => {
+        root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      });
+    </script>
+  </body>
+</html>

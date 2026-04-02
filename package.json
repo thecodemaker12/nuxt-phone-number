@@ -1,0 +1,64 @@
+{
+  "name": "nuxt-phone-input",
+  "version": "0.1.0",
+  "description": "Nuxt-first phone input module with UPhoneInput, usePhone and global phoneInput config",
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "phone-input",
+    "telephone",
+    "libphonenumber",
+    "nuxt-ui"
+  ],
+  "author": "Adama Sambe",
+  "homepage": "https://thecodemaker12.github.io/nuxt-phone-input",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thecodemaker12/nuxt-phone-input.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thecodemaker12/nuxt-phone-input/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow npm",
+    "build": "npx nuxt-module-build build",
+    "dev": "npx nuxt-module-build build --stub && npx nuxt-module-build prepare",
+    "dev:prepare": "npx nuxt-module-build build --stub && npx nuxt-module-build prepare",
+    "typecheck": "npx vue-tsc --noEmit",
+    "release": "npm run build && npm publish --access public"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "nuxt": "^3.0.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/ui": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "libphonenumber-js": "^1.12.41"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.13.0",
+    "nuxt": "^3.13.0",
+    "typescript": "^5.5.0",
+    "vue-tsc": "^2.1.0"
+  }
+}
