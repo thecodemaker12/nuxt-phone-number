@@ -24,6 +24,7 @@ export default defineNuxtModule<ModuleOptions>({
     useBrowserLocale: true,
     format: "international",
     ui: {
+      color: "primary",
       variant: "outline",
       size: "md",
       rounded: "lg",

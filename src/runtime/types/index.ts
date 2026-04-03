@@ -3,8 +3,16 @@ import type { CountryCode } from "libphonenumber-js";
 export type PhoneFormat = "national" | "international" | "e164";
 
 export interface PhoneInputUiOptions {
-  variant?: "outline" | "soft" | "ghost";
-  size?: "sm" | "md" | "lg";
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "info"
+    | "warning"
+    | "error"
+    | "neutral";
+  variant?: "outline" | "soft" | "subtle" | "ghost" | "none";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   rounded?: "none" | "sm" | "md" | "lg" | "xl" | "full";
 }
 

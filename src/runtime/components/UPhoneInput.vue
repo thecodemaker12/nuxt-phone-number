@@ -3,6 +3,7 @@
     <div
       class="npi-control"
       :class="[
+        colorClass,
         roundedClass,
         sizeClass,
         variantClass,
@@ -191,6 +192,7 @@ const props = withDefaults(
     noResultsText?: string;
     invalidMessage?: string;
     format?: PhoneFormat;
+    color?: PhoneInputUiOptions["color"];
     variant?: PhoneInputUiOptions["variant"];
     size?: PhoneInputUiOptions["size"];
     rounded?: PhoneInputUiOptions["rounded"];
@@ -211,6 +213,7 @@ const emit = defineEmits<{
   data: [data: PhoneInputData];
 }>();
 
+const resolvedColor = computed(() => props.color ?? defaults.ui.color ?? "primary");
 const resolvedVariant = computed(() => props.variant ?? defaults.ui.variant ?? "outline");
 const resolvedSize = computed(() => props.size ?? defaults.ui.size ?? "md");
 const resolvedRounded = computed(() => props.rounded ?? defaults.ui.rounded ?? "lg");
@@ -234,6 +237,7 @@ const searchPlaceholder = computed(() => props.searchPlaceholder ?? "Search coun
 const noResultsText = computed(() => props.noResultsText ?? "No country found");
 const invalidMessage = computed(() => props.invalidMessage ?? "Invalid phone number");
 
+const colorClass = computed(() => `npi-color-${resolvedColor.value}`);
 const roundedClass = computed(() => `npi-rounded-${resolvedRounded.value}`);
 const sizeClass = computed(() => `npi-size-${resolvedSize.value}`);
 const variantClass = computed(() => `npi-variant-${resolvedVariant.value}`);
@@ -274,6 +278,7 @@ const isOpen = ref(false);
 const isFocused = ref(false);
 const searchQuery = ref("");
 const isValid = ref(false);
+const hasInteracted = ref(false);
 
 const searchRef = ref<HTMLInputElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -295,11 +300,16 @@ const currentPlaceholder = computed(() => props.placeholder || "Phone number");
 const hasError = computed(
   () =>
     !!props.error ||
-    (displayValue.value.length > 3 && !isValid.value && !isFocused.value),
+    (hasInteracted.value &&
+      displayValue.value.length > 3 &&
+      !isValid.value &&
+      !isFocused.value),
 );
 const errorMessage = computed(() => {
   if (typeof props.error === "string") return props.error;
-  if (displayValue.value.length > 3 && !isValid.value) return invalidMessage.value;
+  if (hasInteracted.value && displayValue.value.length > 3 && !isValid.value) {
+    return invalidMessage.value;
+  }
   return "";
 });
 
@@ -389,6 +399,7 @@ function selectCountry(country: Country) {
 
 function onInput() {
   if (!selectedCountry.value) return;
+  hasInteracted.value = true;
 
   if (displayValue.value.startsWith("+")) {
     const parsed = parsePhoneNumberFromString(displayValue.value);
@@ -427,6 +438,7 @@ function onInput() {
 
 function onBlur() {
   isFocused.value = false;
+  hasInteracted.value = true;
   emitData();
 }
 
@@ -526,13 +538,23 @@ onUnmounted(() => {
 watch(
   () => props.modelValue,
   (value) => {
-    if (!value || value === displayValue.value) return;
+    if (!value) {
+      displayValue.value = "";
+      isValid.value = false;
+      hasInteracted.value = false;
+      return;
+    }
+
+    if (value === displayValue.value) return;
+
     if (value.startsWith("+")) {
       const parsed = parsePhoneNumberFromString(value);
       if (parsed?.country) {
         const found = allCountries.value.find((country) => country.code === parsed.country);
         if (found) selectedCountry.value = found;
       }
+
+      isValid.value = parsed?.isValid() ?? false;
       displayValue.value =
         resolvedFormat.value === "national"
           ? (parsed?.formatNational() ?? value)
@@ -541,6 +563,17 @@ watch(
             : value;
       return;
     }
+
+    try {
+      const parsed = parsePhoneNumberFromString(
+        value,
+        selectedCountry.value?.code,
+      );
+      isValid.value = parsed?.isValid() ?? false;
+    } catch {
+      isValid.value = false;
+    }
+
     displayValue.value = value;
   },
   { immediate: true },
@@ -566,7 +599,44 @@ watch(
   --npi-placeholder: #94a3b8;
   --npi-success: #16a34a;
   --npi-error: #dc2626;
+  --npi-accent: #2563eb;
+  --npi-accent-soft: rgba(37, 99, 235, 0.12);
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.npi-color-primary {
+  --npi-accent: #2563eb;
+  --npi-accent-soft: rgba(37, 99, 235, 0.12);
+}
+
+.npi-color-secondary {
+  --npi-accent: #7c3aed;
+  --npi-accent-soft: rgba(124, 58, 237, 0.12);
+}
+
+.npi-color-success {
+  --npi-accent: #16a34a;
+  --npi-accent-soft: rgba(22, 163, 74, 0.12);
+}
+
+.npi-color-info {
+  --npi-accent: #0891b2;
+  --npi-accent-soft: rgba(8, 145, 178, 0.12);
+}
+
+.npi-color-warning {
+  --npi-accent: #d97706;
+  --npi-accent-soft: rgba(217, 119, 6, 0.12);
+}
+
+.npi-color-error {
+  --npi-accent: #dc2626;
+  --npi-accent-soft: rgba(220, 38, 38, 0.12);
+}
+
+.npi-color-neutral {
+  --npi-accent: #475569;
+  --npi-accent-soft: rgba(71, 85, 105, 0.12);
 }
 
 .npi-control {
@@ -583,8 +653,8 @@ watch(
 }
 
 .npi-control-active {
-  border-color: var(--npi-border-active);
-  box-shadow: 0 0 0 4px var(--npi-ring);
+  border-color: var(--npi-accent);
+  box-shadow: 0 0 0 4px var(--npi-accent-soft);
 }
 
 .npi-control-error {
@@ -605,15 +675,37 @@ watch(
   background: var(--npi-bg-soft);
 }
 
+.npi-variant-subtle {
+  background: color-mix(in srgb, var(--npi-accent-soft) 45%, var(--npi-bg));
+  border-color: color-mix(in srgb, var(--npi-accent) 22%, var(--npi-border));
+}
+
 .npi-variant-ghost {
   background: transparent;
 }
 
+.npi-variant-none {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.npi-variant-none .npi-country-button {
+  border-right-color: transparent;
+}
+
+.npi-rounded-none { border-radius: 0; }
 .npi-rounded-sm { border-radius: 0.375rem; }
 .npi-rounded-md { border-radius: 0.5rem; }
 .npi-rounded-lg { border-radius: 0.75rem; }
 .npi-rounded-xl { border-radius: 1rem; }
 .npi-rounded-full { border-radius: 9999px; }
+
+.npi-size-xs .npi-country-button,
+.npi-size-xs .npi-input {
+  padding: 0.42rem 0.65rem;
+  font-size: 0.75rem;
+}
 
 .npi-size-sm .npi-country-button,
 .npi-size-sm .npi-input {
@@ -631,6 +723,12 @@ watch(
 .npi-size-lg .npi-input {
   padding: 0.95rem 1rem;
   font-size: 1rem;
+}
+
+.npi-size-xl .npi-country-button,
+.npi-size-xl .npi-input {
+  padding: 1.1rem 1.1rem;
+  font-size: 1.05rem;
 }
 
 .npi-country-button {

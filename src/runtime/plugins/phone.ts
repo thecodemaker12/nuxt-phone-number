@@ -51,6 +51,7 @@ export default defineNuxtPlugin(() => {
     useBrowserLocale: config.public.phoneInput?.useBrowserLocale ?? true,
     format: config.public.phoneInput?.format ?? "international",
     ui: {
+      color: config.public.phoneInput?.ui?.color ?? "primary",
       variant: config.public.phoneInput?.ui?.variant ?? "outline",
       size: config.public.phoneInput?.ui?.size ?? "md",
       rounded: config.public.phoneInput?.ui?.rounded ?? "lg",

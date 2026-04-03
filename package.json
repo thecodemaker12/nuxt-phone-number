@@ -1,6 +1,6 @@
 {
   "name": "nuxt-phone-number",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Nuxt-first phone input module with UPhoneInput, usePhone and global phoneInput config",
   "keywords": [
     "nuxt",
@@ -11,13 +11,13 @@
     "nuxt-ui"
   ],
   "author": "Adama Sambe",
-  "homepage": "https://thecodemaker12.github.io/nuxt-phone-input",
+  "homepage": "https://thecodemaker12.github.io/nuxt-phone-number",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thecodemaker12/nuxt-phone-input.git"
+    "url": "git+https://github.com/thecodemaker12/nuxt-phone-number.git"
   },
   "bugs": {
-    "url": "https://github.com/thecodemaker12/nuxt-phone-input/issues"
+    "url": "https://github.com/thecodemaker12/nuxt-phone-number/issues"
   },
   "license": "MIT",
   "type": "module",
