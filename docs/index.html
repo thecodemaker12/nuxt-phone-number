@@ -43,8 +43,7 @@
         --warning: #d97706;
         --error: #dc2626;
         --shadow:
-          0 1px 2px rgba(15, 23, 42, 0.04),
-          0 8px 24px rgba(15, 23, 42, 0.06);
+          0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
       }
 
       [data-theme="dark"] {
@@ -64,8 +63,7 @@
         --warning: #f59e0b;
         --error: #f87171;
         --shadow:
-          0 1px 2px rgba(0, 0, 0, 0.35),
-          0 18px 36px rgba(0, 0, 0, 0.35);
+          0 1px 2px rgba(0, 0, 0, 0.35), 0 18px 36px rgba(0, 0, 0, 0.35);
       }
 
       * {
@@ -258,7 +256,11 @@
       .hero-copy {
         padding: 28px;
         background:
-          radial-gradient(circle at top right, var(--primary-muted), transparent 34%),
+          radial-gradient(
+            circle at top right,
+            var(--primary-muted),
+            transparent 34%
+          ),
           linear-gradient(180deg, var(--bg-elevated), var(--bg-muted));
       }
 
@@ -313,7 +315,11 @@
       .preview {
         padding: 24px;
         background:
-          radial-gradient(circle at top left, var(--primary-muted), transparent 30%),
+          radial-gradient(
+            circle at top left,
+            var(--primary-muted),
+            transparent 30%
+          ),
           linear-gradient(180deg, var(--bg-elevated), var(--bg-soft));
       }
 
@@ -557,8 +563,20 @@
       </div>
 
       <div class="topbar-actions">
-        <a class="button" href="https://github.com/thecodemaker12/nuxt-phone-number" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="button primary" href="https://www.npmjs.com/package/nuxt-phone-number" target="_blank" rel="noreferrer">npm</a>
+        <a
+          class="button"
+          href="https://github.com/thecodemaker12/nuxt-phone-number"
+          target="_blank"
+          rel="noreferrer"
+          >GitHub</a
+        >
+        <a
+          class="button primary"
+          href="https://www.npmjs.com/package/nuxt-phone-number"
+          target="_blank"
+          rel="noreferrer"
+          >npm</a
+        >
         <button class="button" id="themeToggle" type="button">Theme</button>
       </div>
     </header>
@@ -567,18 +585,34 @@
       <aside class="sidebar">
         <div class="sidebar-title">Getting Started</div>
         <nav class="nav">
-          <a class="nav-link" href="#overview"><span class="nav-dot"></span>Overview</a>
-          <a class="nav-link" href="#installation"><span class="nav-dot"></span>Installation</a>
-          <a class="nav-link" href="#usage"><span class="nav-dot"></span>Usage</a>
-          <a class="nav-link" href="#examples"><span class="nav-dot"></span>Examples</a>
+          <a class="nav-link" href="#overview"
+            ><span class="nav-dot"></span>Overview</a
+          >
+          <a class="nav-link" href="#installation"
+            ><span class="nav-dot"></span>Installation</a
+          >
+          <a class="nav-link" href="#usage"
+            ><span class="nav-dot"></span>Usage</a
+          >
+          <a class="nav-link" href="#examples"
+            ><span class="nav-dot"></span>Examples</a
+          >
         </nav>
 
         <div class="sidebar-title" style="margin-top: 22px">API</div>
         <nav class="nav">
-          <a class="nav-link" href="#config"><span class="nav-dot"></span>Nuxt Config</a>
-          <a class="nav-link" href="#props"><span class="nav-dot"></span>Props</a>
-          <a class="nav-link" href="#events"><span class="nav-dot"></span>Events</a>
-          <a class="nav-link" href="#composable"><span class="nav-dot"></span>usePhone</a>
+          <a class="nav-link" href="#config"
+            ><span class="nav-dot"></span>Nuxt Config</a
+          >
+          <a class="nav-link" href="#props"
+            ><span class="nav-dot"></span>Props</a
+          >
+          <a class="nav-link" href="#events"
+            ><span class="nav-dot"></span>Events</a
+          >
+          <a class="nav-link" href="#composable"
+            ><span class="nav-dot"></span>usePhone</a
+          >
         </nav>
       </aside>
 
@@ -617,7 +651,7 @@
                     <div class="label">Phone</div>
                     <div class="field" style="margin-top: 8px">
                       <div class="field-country">🇸🇳 +221</div>
-                      <div class="field-input">77 223 32 84</div>
+                      <div class="field-input">77 123 45 67</div>
                     </div>
                   </div>
                   <div class="field-help">
@@ -763,12 +797,21 @@ const phone = ref("")
                 <tbody>
                   <tr>
                     <td><code>color</code></td>
-                    <td><code>"primary" | "secondary" | "success" | "info" | "warning" | "error" | "neutral"</code></td>
+                    <td>
+                      <code
+                        >"primary" | "secondary" | "success" | "info" |
+                        "warning" | "error" | "neutral"</code
+                      >
+                    </td>
                     <td><code>"primary"</code></td>
                   </tr>
                   <tr>
                     <td><code>variant</code></td>
-                    <td><code>"outline" | "soft" | "subtle" | "ghost" | "none"</code></td>
+                    <td>
+                      <code
+                        >"outline" | "soft" | "subtle" | "ghost" | "none"</code
+                      >
+                    </td>
                     <td><code>"outline"</code></td>
                   </tr>
                   <tr>
@@ -778,7 +821,9 @@ const phone = ref("")
                   </tr>
                   <tr>
                     <td><code>rounded</code></td>
-                    <td><code>"none" | "sm" | "md" | "lg" | "xl" | "full"</code></td>
+                    <td>
+                      <code>"none" | "sm" | "md" | "lg" | "xl" | "full"</code>
+                    </td>
                     <td><code>"lg"</code></td>
                   </tr>
                   <tr>
@@ -830,7 +875,10 @@ const phone = ref("")
                   <tr>
                     <td><code>update:modelValue</code></td>
                     <td><code>string</code></td>
-                    <td>Current formatted value according to the chosen output mode.</td>
+                    <td>
+                      Current formatted value according to the chosen output
+                      mode.
+                    </td>
                   </tr>
                   <tr>
                     <td><code>update:countryCode</code></td>
@@ -840,7 +888,10 @@ const phone = ref("")
                   <tr>
                     <td><code>data</code></td>
                     <td><code>PhoneInputData</code></td>
-                    <td>Normalized payload with E.164, formatted output and validity.</td>
+                    <td>
+                      Normalized payload with E.164, formatted output and
+                      validity.
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -858,17 +909,21 @@ const phone = ref("")
               <pre><code>&lt;script setup lang="ts"&gt;
 const { formatPhone, validatePhone, parsePhone, defaults } = usePhone()
 
-const formatted = formatPhone("+221772233284")
-const valid = validatePhone("+221772233284")
-const parsed = parsePhone("+221772233284")
+const formatted = formatPhone("+221771234567")
+const valid = validatePhone("+221771234567")
+const parsed = parsePhone("+221771234567")
 &lt;/script&gt;</code></pre>
             </div>
           </section>
 
           <footer class="footer">
-            Documentation rewritten with a stronger Nuxt UI Input-inspired
-            structure and visual language. Official Nuxt UI Input docs:
-            <a href="https://ui.nuxt.com/docs/components/input" target="_blank" rel="noreferrer">ui.nuxt.com/docs/components/input</a>
+            Package built with 💡 by
+            <a
+              href="https://github.com/thecodemaker12"
+              target="_blank"
+              rel="noopener noreferrer"
+              >thecodemaker12</a
+            >
           </footer>
         </div>
       </main>
